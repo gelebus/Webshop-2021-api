@@ -27,7 +27,7 @@ namespace Webshop2021Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration["ConnectionString"]));
         }
 
@@ -42,7 +42,7 @@ namespace Webshop2021Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

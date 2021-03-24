@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using Webshop2021Api.Data;
 using Webshop2021Api.Logic.Products;
 using Webshop2021Api.Logic.ViewModels;
@@ -34,8 +35,9 @@ namespace Webshop2021Api.Controllers
             return Ok(new ProductCrud(_context).GetProduct(id));
         }
         [HttpPost]
-        public IActionResult CreateProduct(AdminProductViewmodel product)
+        public IActionResult CreateProduct(JObject jObject)
         {
+            var product = jObject.ToObject<AdminProductViewmodel>();
             return Ok(new ProductCrud(_context).CreateProduct(product));
         }
         [HttpDelete("{id}")]
