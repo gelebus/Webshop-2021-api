@@ -26,8 +26,15 @@ namespace Webshop2021Api.Logic.Products
                 Description = product.Description,
                 Value = product.Value
             });
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+
+            }
             
-            await _context.SaveChangesAsync();
         }
         public async Task UpdateProduct(AdminProductViewmodel productvm)
         {

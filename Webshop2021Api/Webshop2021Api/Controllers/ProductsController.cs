@@ -14,41 +14,42 @@ namespace Webshop2021Api.Controllers
     [Route("[controller]")]
     public class ProductsController : Controller
     {
-        private AppDbContext _context;
+        private ProductCrud productCrud;
         public ProductsController(AppDbContext context)
         {
-            _context = context;
+            productCrud = new ProductCrud(context);
         }
         [HttpGet] 
         public IActionResult GetProducts()
         {
-            return Ok(new ProductCrud(_context).GetProducts());
+            return Ok(productCrud.GetProducts());
         }
         [HttpGet("User")]
         public IActionResult GetUserProducts()
         {
-            return Ok(new ProductCrud(_context).GetUserProducts());
+            return Ok(productCrud.GetUserProducts());
         }
         [HttpGet("{id}")]
         public IActionResult GetProduct(int id)
         {
-            return Ok(new ProductCrud(_context).GetProduct(id));
+            return Ok(productCrud.GetProduct(id));
         }
         [HttpPost]
-        public IActionResult CreateProduct(JObject jObject)
+        public async Task<IActionResult> CreateProduct(JObject jObject)
         {
             var product = jObject.ToObject<AdminProductViewmodel>();
-            return Ok(new ProductCrud(_context).CreateProduct(product));
+            await productCrud.CreateProduct(product);
+            return Ok();
         }
         [HttpDelete("{id}")]
         public IActionResult RemoveProduct(int id)
         {
-            return Ok(new ProductCrud(_context).RemoveProduct(id));
+            return Ok(productCrud.RemoveProduct(id));
         }
         [HttpPut]
         public IActionResult UpdateProduct(AdminProductViewmodel product)
         {
-            return Ok(new ProductCrud(_context).UpdateProduct(product));
+            return Ok(productCrud.UpdateProduct(product));
         }
     }
 }
