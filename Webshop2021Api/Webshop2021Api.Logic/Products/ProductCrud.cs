@@ -18,14 +18,15 @@ namespace Webshop2021Api.Logic.Products
             _context = context;
         }
 
-        public async Task CreateProduct(AdminProductViewmodel product)
+        public async Task<AdminProductViewmodel> CreateProduct(AdminProductViewmodel product)
         {
-            _context.Products.Add(new Product() 
-            { 
-                Name= product.Name,
+            var p = new Product()
+            {
+                Name = product.Name,
                 Description = product.Description,
                 Value = product.Value
-            });
+            };
+            _context.Products.Add(p);
             try
             {
                 await _context.SaveChangesAsync();
@@ -34,22 +35,51 @@ namespace Webshop2021Api.Logic.Products
             {
 
             }
-            
+            return new AdminProductViewmodel()
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Value = p.Value
+            };
         }
-        public async Task UpdateProduct(AdminProductViewmodel productvm)
+        public async Task<AdminProductViewmodel> UpdateProduct(AdminProductViewmodel productvm)
         {
             var product = _context.Products.FirstOrDefault(a => a.Id == productvm.Id);
             product.Name = productvm.Name;
             product.Description = productvm.Description;
             product.Value = productvm.Value;
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return new AdminProductViewmodel()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Value = product.Value
+            };
         }
-        public async Task RemoveProduct(int id)
+        public async Task<bool> RemoveProduct(int id)
         {
             var product = _context.Products.FirstOrDefault(a => a.Id == id);
             _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception er)
+            {
+                return false;
+            }
+            
         }
         public AdminProductViewmodel GetProduct(int id)
         {
@@ -64,13 +94,14 @@ namespace Webshop2021Api.Logic.Products
         }
         public IEnumerable<AdminProductViewmodel> GetProducts()
         {
-            return _context.Products.ToList().Select(a => new AdminProductViewmodel()
+            var p = _context.Products.ToList().Select(a => new AdminProductViewmodel()
             {
                 Id = a.Id,
                 Name = a.Name,
                 Description = a.Description,
                 Value = a.Value
             });
+            return p;
         }
         public IEnumerable<ProductViewmodel> GetUserProducts()
         {

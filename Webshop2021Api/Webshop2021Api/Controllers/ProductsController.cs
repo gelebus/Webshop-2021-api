@@ -38,18 +38,17 @@ namespace Webshop2021Api.Controllers
         public async Task<IActionResult> CreateProduct(JObject jObject)
         {
             var product = jObject.ToObject<AdminProductViewmodel>();
-            await productCrud.CreateProduct(product);
-            return Ok();
+            return Ok(await productCrud.CreateProduct(product));
         }
         [HttpDelete("{id}")]
-        public IActionResult RemoveProduct(int id)
+        public async Task<IActionResult> RemoveProduct(int id)
         {
-            return Ok(productCrud.RemoveProduct(id));
+            return Ok(await productCrud.RemoveProduct(id));
         }
         [HttpPut]
-        public IActionResult UpdateProduct(AdminProductViewmodel product)
+        public async Task<IActionResult> UpdateProduct(AdminProductViewmodel product)
         {
-            return Ok(productCrud.UpdateProduct(product));
+            return Ok(await productCrud.UpdateProduct(product));
         }
     }
 }
