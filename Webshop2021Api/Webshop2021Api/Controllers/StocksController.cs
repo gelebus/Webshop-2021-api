@@ -20,10 +20,10 @@ namespace Webshop2021Api.Controllers
         {
             stockCrud = new StockCrud(context);
         }
-        [HttpGet("{productId}")] 
-        public IActionResult GetStocks(int productId)
+        [HttpGet] 
+        public IActionResult GetStocks()
         {
-            return Ok(stockCrud.GetStocks(productId));
+            return Ok(stockCrud.GetStocks());
         }
         [HttpPost]
         public async Task<IActionResult> CreateStock(StockViewModel stock)

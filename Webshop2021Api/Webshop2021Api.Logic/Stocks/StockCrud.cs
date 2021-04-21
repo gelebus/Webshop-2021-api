@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -72,19 +73,26 @@ namespace Webshop2021Api.Logic.Stocks
             }
         }
 
-        public IEnumerable<StockViewModel> GetStocks(int productId)
+        public IEnumerable<AdminProductViewmodel> GetStocks()
         {
-            var stock = _context.Stocks
-                .Where(a => a.ProductId == productId)
-                .Select(a => new StockViewModel()
+            var product = _context.Products
+                .Include(a => a.Stock)
+                .Select(a => new AdminProductViewmodel()
                 {
                     Id = a.Id,
-                    ProductId = a.ProductId,
                     Description = a.Description,
-                    Quantity = a.Quantity
+                    Name = a.Name,
+                    Value = a.Value,
+                    Stock = a.Stock.Select(b => new StockViewModel()
+                    {
+                        Id = b.Id,
+                        ProductId = b.ProductId,
+                        Description = b.Description,
+                        Quantity = b.Quantity
+                    })
                 })
                 .ToList();
-            return stock;
+            return product;
         }
     }
 }
