@@ -15,5 +15,6 @@ namespace Webshop2021Api.Data
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Stock> Stocks { get; set; }
     }
 }
