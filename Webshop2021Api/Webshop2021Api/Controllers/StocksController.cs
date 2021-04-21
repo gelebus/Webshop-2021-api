@@ -20,7 +20,7 @@ namespace Webshop2021Api.Controllers
         {
             stockCrud = new StockCrud(context);
         }
-        [HttpGet] 
+        [HttpGet("{productId}")] 
         public IActionResult GetStocks(int productId)
         {
             return Ok(stockCrud.GetStocks(productId));
